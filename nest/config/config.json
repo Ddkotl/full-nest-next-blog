@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "dima",
+    "password": "qwe123",
+    "database": "full-nest-next-blog",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "test": {
+    "username": "dima",
+    "password": "qwe123",
+    "database": "full-nest-next-blog",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "production": {
+    "username": "dima",
+    "password": "qwe123",
+    "database": "full-nest-next-blog",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  }
+}
