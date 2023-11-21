@@ -1,30 +1,31 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as session from 'express-session';
-import * as passport from 'passport';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const PORT = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
-  app.use(
-    session({
-      secret: 'keyword',
-      resave: false,
-      saveUninitialized: false,
-    }),
-  );
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(
+  //   session({
+  //     secret: 'keyword',
+  //     resave: false,
+  //     saveUninitialized: false,
+  //   }),
+  // );
+  // app.use(passport.initialize());
+  // app.use(passport.session());
 
   const config = new DocumentBuilder()
-    .setTitle('Aqua termix')
+    .setTitle('TechBlog')
     .setDescription('api documentation')
     .setVersion('1.0')
-    .addTag('api')
+    .addTag('Ddkotl')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('/api/doc', app, document);
 
-  await app.listen(3000);
+  await app.listen(PORT, () => {
+    console.log(`Server started on port  - ${PORT}`);
+  });
 }
 bootstrap();
