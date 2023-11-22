@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { databaseConfig } from './config/configuration';
 import { SequelizeConfigService } from './config/sequelizeConfig.service';
 import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from './users/users.module';
       envFilePath: `${process.env.NODE_ENV}.env`,
     }),
     UsersModule,
+    RolesModule,
   ],
   providers: [],
 })

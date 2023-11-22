@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { RolesService } from 'src/roles/roles.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { User } from './entities/users.entity';
@@ -9,20 +10,23 @@ export class UsersService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
+    private roleServise: RolesService,
   ) {}
 
   async createUser(dto: CreateUserDto): Promise<User> {
     const user = await this.userModel.create(dto);
+    const role = await this.roleServise.findOneByValue('USER');
+    await user.$set('roles', [role.id]);
     return user;
   }
 
   async getAllUser(): Promise<User[]> {
-    const users = await this.userModel.findAll();
+    const users = await this.userModel.findAll({ include: { all: true } });
     return users;
   }
 
   async getOneUser(id: number): Promise<User> {
-    const user = await this.userModel.findByPk(id);
+    const user = await this.userModel.findByPk(id, { include: { all: true } });
     if (!user) {
       throw new NotFoundException('Такого пользователя нет');
     }
