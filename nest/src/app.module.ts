@@ -5,6 +5,7 @@ import { databaseConfig } from './config/configuration';
 import { SequelizeConfigService } from './config/sequelizeConfig.service';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { RolesModule } from './roles/roles.module';
     }),
     UsersModule,
     RolesModule,
+    AuthModule,
   ],
   providers: [],
 })

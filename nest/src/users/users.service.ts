@@ -17,6 +17,7 @@ export class UsersService {
     const user = await this.userModel.create(dto);
     const role = await this.roleServise.findOneByValue('USER');
     await user.$set('roles', [role.id]);
+    user.roles = [role];
     return user;
   }
 
@@ -41,6 +42,21 @@ export class UsersService {
   async deleteUser(id: number): Promise<void> {
     const user = await this.getOneUser(id);
     user.destroy();
+  }
+
+  async getUserByUsername(username: string): Promise<User> {
+    const user = await this.userModel.findOne({
+      where: { username: username },
+      include: { all: true },
+    });
+    return user;
+  }
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.userModel.findOne({
+      where: { email: email },
+      include: { all: true },
+    });
+    return user;
   }
   // findOne(filter: {
   //   where: { id?: string; username?: string; email?: string };
