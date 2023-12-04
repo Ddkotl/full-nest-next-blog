@@ -9,8 +9,6 @@ import {
   Post,
   Put,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/auth/roles.auth.decorator';
@@ -29,7 +27,6 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Создание пользователя' })
   @ApiResponse({ status: 201, type: User })
-  @UsePipes(ValidationPipe)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() userDto: CreateUserDto) {

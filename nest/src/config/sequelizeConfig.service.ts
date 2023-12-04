@@ -4,6 +4,7 @@ import {
   SequelizeModuleOptions,
   SequelizeOptionsFactory,
 } from '@nestjs/sequelize';
+import { Post } from 'src/posts/entities/post.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { UserRole } from 'src/roles/entities/user-role.entity';
 import { User } from 'src/users/entities/users.entity';
@@ -23,7 +24,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
       username,
       password,
       database,
-      models: [User, Role, UserRole],
+      models: [User, Role, UserRole, Post],
       autoLoadModels: true,
       synchronize: true,
       define: {
