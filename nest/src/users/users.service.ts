@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { RolesService } from 'src/roles/roles.service';
 import { AddRoleDto } from './dto/add.role.dto';
+import { BanUserDto } from './dto/ban.user.dto';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { User } from './entities/users.entity';
@@ -76,7 +77,7 @@ export class UsersService {
   }
 
   async addRole(dto: AddRoleDto) {
-    const user = await this.userModel.findByPk(dto.userId);
+    const user = await this.getOneUser(dto.userId);
     const role = await this.roleServise.findOneByValue(dto.value);
     if (role && user) {
       await user.$add('role', role.id);
@@ -87,7 +88,13 @@ export class UsersService {
       HttpStatus.NOT_FOUND,
     );
   }
-  async banUser(dto: BunUserDto) {}
+  async banUser(dto: BanUserDto) {
+    const user = await this.getOneUser(dto.userId);
+    user.banned = true;
+    user.banReason = dto.banReason;
+    await user.save();
+    return user;
+  }
 
   async getUserByUsername(username: string): Promise<User> {
     const user = await this.userModel.findOne({
