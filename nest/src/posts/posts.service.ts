@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { FilesService } from 'src/files/files.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -13,16 +13,31 @@ export class PostsService {
   ) {}
 
   async create(createPostDto: CreatePostDto, image: any) {
-    const fileName = await this.fileServise.createFile(image);
-    const post = await this.postModel.create({
-      ...createPostDto,
-      image: fileName,
-    });
-    return post;
+    try {
+      const fileName = await this.fileServise.createFile(image);
+      const post = await this.postModel.create({
+        ...createPostDto,
+        image: fileName,
+      });
+      return post;
+    } catch (error) {
+      throw new Error('Не удалось создать пост');
+    }
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  async findAll(): Promise<Post[]> {
+    try {
+      const posts = await this.postModel.findAll({ include: { all: true } });
+      if (!posts) {
+        throw new HttpException('Нету постов', HttpStatus.NOT_FOUND);
+      }
+      return posts;
+    } catch (error) {
+      throw new HttpException(
+        'Не удалось получить посты',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findOne(id: number) {

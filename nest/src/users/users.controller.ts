@@ -27,6 +27,8 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Создание пользователя' })
   @ApiResponse({ status: 201, type: User })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() userDto: CreateUserDto) {
